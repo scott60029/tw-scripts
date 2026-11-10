@@ -2070,7 +2070,8 @@ window.twSDK = {
         let cats = twSDK.getTroop('catapult');
         let rams = twSDK.getTroop('ram');
         let scouts = twSDK.getTroop('spy');
-        let light = twSDK.getTroop('light') * 4;
+        let lightCount = twSDK.getTroop('light'); // MOD: keep real count
+        let light = lightCount * 4;
         let spear = twSDK.getTroop('spear');
         let sword = twSDK.getTroop('sword');
         let axe = twSDK.getTroop('axe');
@@ -2098,10 +2099,9 @@ window.twSDK = {
         }
 
         if (fakePop > 0) {
-            if (light > 0 && fakePop > 0) {
-                if (light * 4 >= fakePop) {
-                    light = Math.ceil(fakePop / 4);
-                }
+            if (lightCount > 0 && fakePop > 0) {
+                // MOD fix: never send more light cavalry than available (original used count*4)
+                light = Math.min(lightCount, Math.ceil(fakePop / 4));
                 document.forms[0].light.value = light;
                 fakePop = fakePop - light * 4;
             }
